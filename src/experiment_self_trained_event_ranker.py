@@ -270,7 +270,10 @@ def main() -> None:
     score_dir = out_dir / "candidate_scores"
     score_dir.mkdir(parents=True, exist_ok=True)
 
-    dtpp = load_module(Path("scripts/run_dtpp_from_at_scores.py"), "dtpp_self_event_ranker")
+    dtpp = load_module(
+        Path(__file__).resolve().parent / "run_dtpp_from_at_scores.py",
+        "dtpp_self_event_ranker",
+    )
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     pairs = parse_pairs(args.pairs)
     data_cache: dict[str, tuple[np.ndarray, np.ndarray, np.ndarray]] = {}

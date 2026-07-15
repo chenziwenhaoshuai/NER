@@ -86,6 +86,7 @@ The scripts used for paper ablations are in [`exp/`](exp):
 | `operating_sensitivity.py` | alert-budget and candidate-spacing sensitivity |
 | `random_insertion_guardrail.py` | matched-budget random insertion control |
 | `evidence_stress.py` | candidate-score noise, drift, and dropout stress |
+| `train_component_ablation.py` | full training and materialization of all neural branches used in the component ablation |
 
 Run all released experiments:
 
@@ -104,6 +105,12 @@ python exp/evidence_stress.py
 
 Raw rows, summaries, and figures are written under `results/`. The scripts
 never overwrite the frozen artifacts.
+
+The commands above reproduce the paper experiments from the frozen release
+artifacts. To retrain all three neural branches used by the component ablation,
+install `requirements-train.txt` and follow [`exp/README.md`](exp/README.md).
+That path requires the preprocessed datasets and the common backbone-score
+exports because those large licensed inputs are not redistributed.
 
 ## Repository structure
 
@@ -195,4 +202,3 @@ The paper is under review. A BibTeX entry will be added after publication.
 
 Code is released under the MIT License. Dataset licenses remain with their
 original providers.
-
