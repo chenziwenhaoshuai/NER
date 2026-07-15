@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.idea/
+.vscode/
+artifacts/*.zip
+artifacts/v7/
+results/
+checkpoints/
+datasets/
+

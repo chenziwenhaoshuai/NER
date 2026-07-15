@@ -1,0 +1,13 @@
+name: ner
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+dependencies:
+  - python=3.11
+  - numpy>=1.24
+  - pandas>=2.0
+  - matplotlib>=3.7
+  - pytorch>=2.1
+  - pip
+
