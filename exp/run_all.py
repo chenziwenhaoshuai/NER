@@ -13,6 +13,8 @@ def main() -> None:
         [sys.executable, str(ROOT / "reproduce.py")],
         [sys.executable, str(ROOT / "exp/component_ablation.py")],
         [sys.executable, str(ROOT / "exp/operating_sensitivity.py")],
+        [sys.executable, str(ROOT / "exp/router_sensitivity.py")],
+        [sys.executable, str(ROOT / "exp/center_to_interval.py")],
         [sys.executable, str(ROOT / "exp/random_insertion_guardrail.py")],
         [sys.executable, str(ROOT / "exp/evidence_stress.py")],
     ]
@@ -23,4 +25,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

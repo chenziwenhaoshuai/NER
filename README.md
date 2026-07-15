@@ -84,9 +84,13 @@ The scripts used for paper ablations are in [`exp/`](exp):
 |---|---|
 | `component_ablation.py` | temporal calibration, event prior, each neural expert, fixed neural mixture, full router |
 | `operating_sensitivity.py` | alert-budget and candidate-spacing sensitivity |
+| `router_sensitivity.py` | routing-regime threshold sensitivity |
+| `center_to_interval.py` | rescued-center duration and temporal-coverage analysis |
 | `random_insertion_guardrail.py` | matched-budget random insertion control |
 | `evidence_stress.py` | candidate-score noise, drift, and dropout stress |
 | `train_component_ablation.py` | full training and materialization of all neural branches used in the component ablation |
+| `retrain_seed_ablation.py` | complete multi-seed neural-module ablation |
+| `retrain_spacing_ablation.py` | regenerated candidate-spacing ablation with trained scorers |
 
 Run all released experiments:
 
