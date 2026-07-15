@@ -114,8 +114,8 @@ def main() -> None:
             ("range_f1", "Range F1", "#7B61A8"),
         ]:
             axis.plot(
-                current["multiplier"],
-                100 * current[metric],
+                current["multiplier"].to_numpy(dtype=float),
+                100 * current[metric].to_numpy(dtype=float),
                 marker="o",
                 linewidth=1.4,
                 label=label,

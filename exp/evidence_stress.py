@@ -108,7 +108,12 @@ def main() -> None:
     fig, axes = plt.subplots(1, 3, figsize=(7.2, 2.3), sharey=True)
     for axis, family in zip(axes, ["noise", "drift", "dropout"]):
         current = raw[raw["family"] == family].groupby("severity", as_index=False)["event_f1"].mean()
-        axis.plot(current["severity"], 100 * current["event_f1"], marker="o", color="#0072B2")
+        axis.plot(
+            current["severity"].to_numpy(dtype=float),
+            100 * current["event_f1"].to_numpy(dtype=float),
+            marker="o",
+            color="#0072B2",
+        )
         axis.set_title(family.capitalize())
         axis.set_xlabel("Perturbation")
         axis.grid(axis="y", color="#dddddd", linewidth=0.5)
