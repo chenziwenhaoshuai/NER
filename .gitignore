@@ -5,7 +5,7 @@ __pycache__/
 .vscode/
 artifacts/*.zip
 artifacts/v7/
+artifacts/v35/
 results/
 checkpoints/
 datasets/
-

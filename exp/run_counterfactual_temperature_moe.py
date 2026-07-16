@@ -306,7 +306,7 @@ def main() -> None:
     parser.add_argument(
         "--profile_dir",
         type=Path,
-        default=PROJECT_ROOT / "artifacts" / "v7",
+        default=PROJECT_ROOT / "artifacts" / "v35",
         help=(
             "Frozen prediction/candidate-score root. Accepts either the public "
             "artifacts/v35 schema or the full internal paper-profile directory."
