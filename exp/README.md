@@ -31,6 +31,55 @@ The individual entry points are:
 These scripts recompute metrics from the released binary predictions and
 candidate scores. They do not retrain a detector or copy table values.
 
+## Counterfactual-temperature MoE router
+
+`run_counterfactual_temperature_moe.py` is the final MoE-router experiment. It
+uses the frozen candidate pool and expert scores as deployment inputs, learns a
+three-expert prior from label-free counterfactual probes, calibrates an expert
+temperature from the same counterfactual diagnostics, and then materializes the
+final candidate-ranking predictions.
+
+This script requires PyTorch and the counterfactual probe directories generated
+by the full experiment pipeline. Install the training dependencies first:
+
+```bash
+pip install -r requirements-train.txt
+```
+
+Run the MoE router against the compact release artifact schema:
+
+```bash
+python exp/run_counterfactual_temperature_moe.py \
+  --profile_dir artifacts/v7 \
+  --strong_probe_dir /path/to/counterfactual_prototype_all25 \
+  --weak_probe_dir /path/to/counterfactual_weak_prototype_all25 \
+  --output_dir results/moe_counterfactual_temperature \
+  --device cuda
+```
+
+The same command also accepts the full paper-profile directory as
+`--profile_dir`; if the directory contains `neural_router_v7_neural_dominant/`,
+the script resolves that nested layout automatically. The output directory
+contains checkpoints, candidate scores, final predictions, per-pair metrics,
+temperature curves, and the selected temperature for each dataset.
+
+After one or more MoE variants have been materialized, generate the comparison
+tables with explicit method specs:
+
+```bash
+python exp/make_moe_ablation_tables.py \
+  --method "Previous neural router|reference|/path/to/v7_run" \
+  --method "Counterfactual-temperature MoE|learned prior + counterfactual temperature|results/moe_counterfactual_temperature" \
+  --final-dir results/moe_counterfactual_temperature \
+  --output-dir results/moe_ablation_tables
+```
+
+Each method directory must contain `summary/overall_metrics.csv`. The final
+directory may additionally contain `summary/pair_metrics.csv`,
+`summary/seed_summary.csv`, and `summary/temperature_selection.csv`; when
+present, the table script exports dataset-average, seed-stability, and
+temperature-selection tables.
+
 ## Full component-ablation training
 
 `train_component_ablation.py` is the complete training/materialization entry

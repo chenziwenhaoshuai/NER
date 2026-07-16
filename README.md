@@ -6,11 +6,16 @@ detection.
 
 NER takes the pointwise outputs of an already trained detector, identifies
 event candidates from temporal evidence, and ranks a small candidate set using
-three complementary label-free neural scorers:
+three complementary label-free neural experts:
 
 - a self-trained event-prototype scorer;
 - a geometry convolutional autoencoder;
 - a score-augmented convolutional autoencoder.
+
+The current experimental branch also includes a counterfactual-temperature
+mixture-of-experts router that learns dataset-level expert priors from
+label-free counterfactual event-over-normal probes and then calibrates the
+expert mixture temperature before candidate ranking.
 
 The released evaluation covers five datasets and five detector backbones:
 
@@ -63,10 +68,10 @@ writes:
 
 ```text
 results/main/
-├── pair_metrics.csv
-├── overall_metrics.csv
-├── dataset_metrics_fraction.csv
-└── backbone_metrics_fraction.csv
+- pair_metrics.csv
+- overall_metrics.csv
+- dataset_metrics_fraction.csv
+- backbone_metrics_fraction.csv
 ```
 
 The run fails loudly if PA-F1, Event F1, or Range F1 differs from the released
@@ -88,6 +93,8 @@ The scripts used for paper ablations are in [`exp/`](exp):
 | `center_to_interval.py` | rescued-center duration and temporal-coverage analysis |
 | `random_insertion_guardrail.py` | matched-budget random insertion control |
 | `evidence_stress.py` | candidate-score noise, drift, and dropout stress |
+| `run_counterfactual_temperature_moe.py` | final counterfactual-temperature MoE router experiment |
+| `make_moe_ablation_tables.py` | MoE comparison, dataset-average, seed-stability, and temperature-selection tables |
 | `train_component_ablation.py` | full training and materialization of all neural branches used in the component ablation |
 | `retrain_seed_ablation.py` | complete multi-seed neural-module ablation |
 | `retrain_spacing_ablation.py` | regenerated candidate-spacing ablation with trained scorers |
@@ -110,23 +117,25 @@ python exp/evidence_stress.py
 Raw rows, summaries, and figures are written under `results/`. The scripts
 never overwrite the frozen artifacts.
 
-The commands above reproduce the paper experiments from the frozen release
-artifacts. To retrain all three neural branches used by the component ablation,
-install `requirements-train.txt` and follow [`exp/README.md`](exp/README.md).
-That path requires the preprocessed datasets and the common backbone-score
-exports because those large licensed inputs are not redistributed.
+The commands above reproduce the artifact-based paper experiments from the
+frozen release artifacts. To retrain all three neural branches or run the
+counterfactual-temperature MoE router from intermediate probes, install
+`requirements-train.txt` and follow [`exp/README.md`](exp/README.md). That path
+requires the preprocessed datasets, common backbone-score exports, and
+counterfactual probe files because those large licensed or intermediate inputs
+are not redistributed.
 
 ## Repository structure
 
 ```text
 NER/
-├── ner/                 # metrics, router, and artifact loader
-├── src/                 # training/materialization reference implementation
-├── exp/                 # paper ablation and sensitivity scripts
-├── tests/               # reproducibility tests
-├── reproduce.py         # one-command main-result reproduction
-├── environment.yml
-└── requirements.txt
+- ner/                 # metrics, router, and artifact loader
+- src/                 # training/materialization reference implementation
+- exp/                 # paper ablation and sensitivity scripts
+- tests/               # reproducibility tests
+- reproduce.py         # one-command main-result reproduction
+- environment.yml
+- requirements.txt
 ```
 
 ## What is frozen and what is trained
@@ -135,7 +144,7 @@ There are two reproducibility levels:
 
 1. **Exact paper-result reproduction.** `reproduce.py` starts from exported
    candidate scores and prediction arrays. This path is deterministic, fast,
-   and reproduces the reported 5×5 table exactly.
+   and reproduces the reported 5x5 table exactly.
 2. **Method reference implementation.** `src/` contains the scripts used to
    construct the prototype scorer, geometry AE, score-augmented AE, and final
    neural router. These scripts require the benchmark datasets and backbone
@@ -168,6 +177,7 @@ The training and scoring reference entry points are in:
 - `src/experiment_convae_candidate_scorer.py`
 - `src/experiment_augmented_convae_candidate_scorer.py`
 - `src/materialize_neural_router_v7.py`
+- `exp/run_counterfactual_temperature_moe.py`
 
 The final router acts only on the candidate pool; it does not retrain or modify
 the detector backbone.
