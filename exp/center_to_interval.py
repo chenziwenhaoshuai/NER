@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import argparse
 import sys
@@ -32,7 +32,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(
         description="Evaluate sparse rescued-center conversion to finite alarm intervals."
     )
-    parser.add_argument("--artifact-dir", type=Path, default=ROOT / "artifacts/v7")
+    parser.add_argument("--artifact-dir", type=Path, default=ROOT / "artifacts/v35")
     parser.add_argument("--output-dir", type=Path, default=ROOT / "results/center_to_interval")
     parser.add_argument(
         "--radii",
@@ -112,3 +112,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+

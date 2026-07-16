@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import argparse
 import sys
@@ -39,7 +39,7 @@ def perturb(values: np.ndarray, candidates: np.ndarray, family: str, severity: f
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Candidate-evidence robustness analysis.")
-    parser.add_argument("--artifact-dir", type=Path, default=ROOT / "artifacts/v7")
+    parser.add_argument("--artifact-dir", type=Path, default=ROOT / "artifacts/v35")
     parser.add_argument("--output-dir", type=Path, default=ROOT / "results/evidence_stress")
     args = parser.parse_args()
     grid = {
@@ -125,3 +125,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+

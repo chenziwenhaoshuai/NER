@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import argparse
 import sys
@@ -43,9 +43,9 @@ def settings() -> list[tuple[str, float, dict[str, float | int]]]:
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="One-factor-at-a-time sensitivity of the frozen v7 routing rule."
+        description="One-factor-at-a-time sensitivity of the legacy deterministic routing rule."
     )
-    parser.add_argument("--artifact-dir", type=Path, default=ROOT / "artifacts/v7")
+    parser.add_argument("--artifact-dir", type=Path, default=ROOT / "artifacts/v35")
     parser.add_argument("--output-dir", type=Path, default=ROOT / "results/router_sensitivity")
     args = parser.parse_args()
     if not (args.artifact_dir / "manifest.csv").exists():
@@ -123,3 +123,5 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
+

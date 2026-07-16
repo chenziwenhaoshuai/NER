@@ -23,7 +23,7 @@ The individual entry points are:
 |---|---|
 | `component_ablation.py` | Metrics for the baseline, temporal calibration, prior, three neural experts, neural mixture, and complete router |
 | `operating_sensitivity.py` | Alert-budget and candidate-spacing sweeps |
-| `router_sensitivity.py` | One-factor-at-a-time routing-threshold sensitivity |
+| `router_sensitivity.py` | Legacy deterministic-router sensitivity reference |
 | `center_to_interval.py` | Sparse rescued-center to finite-interval conversion |
 | `random_insertion_guardrail.py` | Matched-budget random-insertion control |
 | `evidence_stress.py` | Noise, drift, and missing-evidence robustness |
@@ -50,7 +50,7 @@ Run the MoE router against the compact release artifact schema:
 
 ```bash
 python exp/run_counterfactual_temperature_moe.py \
-  --profile_dir artifacts/v7 \
+  --profile_dir artifacts/v35 \
   --strong_probe_dir /path/to/counterfactual_prototype_all25 \
   --weak_probe_dir /path/to/counterfactual_weak_prototype_all25 \
   --output_dir results/moe_counterfactual_temperature \

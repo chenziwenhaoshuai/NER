@@ -1,4 +1,4 @@
-# Neural Event Rescue
+﻿# Neural Event Rescue
 
 Official reproducibility repository for **Neural Event Rescue (NER)**, a
 plug-in structured decision layer for multivariate time-series anomaly
@@ -30,7 +30,7 @@ The exact frozen-paper reproduction gives:
 | Method | PA-F1 | Event F1 | Range F1 |
 |---|---:|---:|---:|
 | Baseline | 80.97 | 29.48 | 16.76 |
-| NER | **83.33** | **32.69** | **17.53** |
+| NER | **83.34** | **32.69** | **17.54** |
 
 The script recomputes every metric from the 25 saved prediction arrays. It
 does not copy summary numbers into the output.
@@ -78,7 +78,7 @@ The run fails loudly if PA-F1, Event F1, or Range F1 differs from the released
 paper result by more than the configured tolerance.
 
 For an offline machine, download
-`ner_v7_reproduction_artifacts.zip` from Release `v1.0`, place it in
+`ner_v35_moe_reproduction_artifacts.zip` from Release `v1.1`, place it in
 `artifacts/`, and run the same command.
 
 ## Reproduce all ablations and robustness experiments
@@ -89,7 +89,7 @@ The scripts used for paper ablations are in [`exp/`](exp):
 |---|---|
 | `component_ablation.py` | temporal calibration, event prior, each neural expert, fixed neural mixture, full router |
 | `operating_sensitivity.py` | alert-budget and candidate-spacing sensitivity |
-| `router_sensitivity.py` | routing-regime threshold sensitivity |
+| `router_sensitivity.py` | legacy deterministic-router sensitivity reference |
 | `center_to_interval.py` | rescued-center duration and temporal-coverage analysis |
 | `random_insertion_guardrail.py` | matched-budget random insertion control |
 | `evidence_stress.py` | candidate-score noise, drift, and dropout stress |
@@ -201,8 +201,8 @@ computed directly from binary predictions.
 Release asset:
 
 ```text
-ner_v7_reproduction_artifacts.zip
-SHA256: e885f4087382257c9f6b7c7f66a8d40929e45d396039dac408d46b3a5b492f76
+ner_v35_moe_reproduction_artifacts.zip
+SHA256: 1229e8b1af10fb97ea67141d06d46e6d58e6a3277cb80036ea7de865b640d10d
 ```
 
 The extracted archive also contains `manifest.csv` with the SHA256 and byte
@@ -216,3 +216,4 @@ The paper is under review. A BibTeX entry will be added after publication.
 
 Code is released under the MIT License. Dataset licenses remain with their
 original providers.
+

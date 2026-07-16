@@ -15,7 +15,7 @@ VARIANTS = [
     "Geometry ConvAE only",
     "Augmented ConvAE only",
     "Neural-only mixed",
-    "Neural Router v7",
+    "Counterfactual-temperature MoE",
 ]
 
 
@@ -50,4 +50,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

@@ -28,9 +28,10 @@ def ensure_artifacts(
     root: Path,
     url: str,
     expected_sha256: str,
-    archive_name: str = "ner_v7_reproduction_artifacts.zip",
+    archive_name: str = "ner_v35_moe_reproduction_artifacts.zip",
+    artifact_version: str = "v35",
 ) -> Path:
-    artifact_root = root / "artifacts" / "v7"
+    artifact_root = root / "artifacts" / artifact_version
     marker = artifact_root / "manifest.csv"
     if marker.exists():
         return artifact_root
@@ -54,4 +55,3 @@ def ensure_artifacts(
     if not marker.exists():
         raise RuntimeError(f"Invalid artifact archive: missing {marker}")
     return artifact_root
-

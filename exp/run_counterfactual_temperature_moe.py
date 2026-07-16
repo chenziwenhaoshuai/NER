@@ -1,4 +1,4 @@
-"""Counterfactual-temperature MoE for Neural Event Rescue.
+﻿"""Counterfactual-temperature MoE for Neural Event Rescue.
 
 This variant keeps the clean MoE interpretation while avoiding hand-written
 route/fusion rules:
@@ -283,7 +283,7 @@ def resolve_storage(profile: Path) -> Path:
 
     The full internal experiment tree stores the frozen router under
     ``neural_router_v7_neural_dominant``.  The public artifact package stores
-    the same schema directly under ``artifacts/v7``.  Supporting both keeps the
+    the same schema directly under ``artifacts/v35``.  Supporting both keeps the
     experiment script useful for exact paper reproduction and for external
     users who only download the compact release artifacts.
     """
@@ -309,7 +309,7 @@ def main() -> None:
         default=PROJECT_ROOT / "artifacts" / "v7",
         help=(
             "Frozen prediction/candidate-score root. Accepts either the public "
-            "artifacts/v7 schema or the full internal paper-profile directory."
+            "artifacts/v35 schema or the full internal paper-profile directory."
         ),
     )
     parser.add_argument("--strong_probe_dir", type=Path, required=True)
@@ -478,3 +478,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+

@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import argparse
 import json
@@ -15,13 +15,15 @@ ROOT = Path(__file__).resolve().parent
 DATASETS = ["SMD", "MSL", "SMAP", "PSM", "SWaT"]
 MODELS = ["AnomalyTransformer", "Transformer", "Autoformer", "TimesNet", "KANAD"]
 RELEASE_URL = (
-    "https://github.com/chenziwenhaoshuai/NER/releases/download/v1.0/"
-    "ner_v7_reproduction_artifacts.zip"
+    "https://github.com/chenziwenhaoshuai/NER/releases/download/v1.1/"
+    "ner_v35_moe_reproduction_artifacts.zip"
 )
-ARTIFACT_SHA256 = "e885f4087382257c9f6b7c7f66a8d40929e45d396039dac408d46b3a5b492f76"
+ARTIFACT_SHA256 = "1229e8b1af10fb97ea67141d06d46e6d58e6a3277cb80036ea7de865b640d10d"
+ARTIFACT_VERSION = "v35"
+ARCHIVE_NAME = "ner_v35_moe_reproduction_artifacts.zip"
 EXPECTED = {
     "Baseline": {"pa_f1": 80.96960696018658, "event_f1": 29.484028191065175, "range_f1": 16.760069516068903},
-    "Neural Router v7": {"pa_f1": 83.32966426706636, "event_f1": 32.690501656194066, "range_f1": 17.52668014993204},
+    "Counterfactual-temperature MoE": {"pa_f1": 83.3442446305256, "event_f1": 32.69087477010654, "range_f1": 17.539646662421156},
 }
 
 
@@ -33,19 +35,25 @@ PREDICTION_KEYS = {
     "Geometry ConvAE only": "geometry_ae_pred",
     "Augmented ConvAE only": "augmented_ae_pred",
     "Neural-only mixed": "neural_mix_pred",
-    "Neural Router v7": "final_pred",
+    "Counterfactual-temperature MoE": "final_pred",
 }
 
 
 def load_artifacts(no_download: bool) -> Path:
-    existing = ROOT / "artifacts" / "v7"
+    existing = ROOT / "artifacts" / ARTIFACT_VERSION
     if no_download:
         if not (existing / "manifest.csv").exists():
             raise FileNotFoundError(
-                "artifacts/v7 is missing. Run without --no-download or place the release archive locally."
+                f"artifacts/{ARTIFACT_VERSION} is missing. Run without --no-download or place the release archive locally."
             )
         return existing
-    return ensure_artifacts(ROOT, RELEASE_URL, ARTIFACT_SHA256)
+    return ensure_artifacts(
+        ROOT,
+        RELEASE_URL,
+        ARTIFACT_SHA256,
+        archive_name=ARCHIVE_NAME,
+        artifact_version=ARTIFACT_VERSION,
+    )
 
 
 def reproduce(artifact_root: Path, output_dir: Path) -> pd.DataFrame:
@@ -115,3 +123,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+

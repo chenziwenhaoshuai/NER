@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import argparse
 import sys
@@ -43,7 +43,7 @@ def infer_radius(dataset: str) -> int:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Matched-budget random insertion guardrail.")
-    parser.add_argument("--artifact-dir", type=Path, default=ROOT / "artifacts/v7")
+    parser.add_argument("--artifact-dir", type=Path, default=ROOT / "artifacts/v35")
     parser.add_argument("--output-dir", type=Path, default=ROOT / "results/random_guardrail")
     parser.add_argument("--seeds", type=int, default=20)
     args = parser.parse_args()
@@ -112,3 +112,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+

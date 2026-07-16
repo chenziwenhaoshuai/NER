@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import argparse
 import sys
@@ -42,7 +42,7 @@ def select_with_gap(
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Budget and spacing sensitivity on frozen candidates.")
-    parser.add_argument("--artifact-dir", type=Path, default=ROOT / "artifacts/v7")
+    parser.add_argument("--artifact-dir", type=Path, default=ROOT / "artifacts/v35")
     parser.add_argument("--output-dir", type=Path, default=ROOT / "results/sensitivity")
     args = parser.parse_args()
     if not (args.artifact_dir / "manifest.csv").exists():
@@ -136,3 +136,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
