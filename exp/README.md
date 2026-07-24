@@ -26,10 +26,22 @@ The individual entry points are:
 | `router_sensitivity.py` | Legacy deterministic-router sensitivity reference |
 | `center_to_interval.py` | Sparse rescued-center to finite-interval conversion |
 | `random_insertion_guardrail.py` | Matched-budget random-insertion control |
-| `evidence_stress.py` | Noise, drift, and missing-evidence robustness |
+| `evidence_stress.py` | Noise, drift, and missing-evidence robustness against a matched-budget prior-only control |
+| `make_paper_artifacts.py` | Paper-ready LaTeX tables and quantitative figures from reproduced results |
 
 These scripts recompute metrics from the released binary predictions and
 candidate scores. They do not retrain a detector or copy table values.
+
+After running `python reproduce.py` and `python exp/run_all.py`, generate the
+paper-ready tables and quantitative figures with:
+
+```bash
+python exp/make_paper_artifacts.py
+```
+
+The generated assets are written to `results/paper_artifacts/`.  The overview
+architecture figure and qualitative case-study panels are manuscript assets
+that are not regenerated from the frozen score artifacts.
 
 ## Counterfactual-temperature MoE router
 

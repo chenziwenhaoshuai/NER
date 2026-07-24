@@ -92,12 +92,13 @@ The scripts used for paper ablations are in [`exp/`](exp):
 | `router_sensitivity.py` | legacy deterministic-router sensitivity reference |
 | `center_to_interval.py` | rescued-center duration and temporal-coverage analysis |
 | `random_insertion_guardrail.py` | matched-budget random insertion control |
-| `evidence_stress.py` | candidate-score noise, drift, and dropout stress |
+| `evidence_stress.py` | candidate-score noise, drift, and dropout stress against a matched-budget prior-only control |
 | `run_counterfactual_temperature_moe.py` | final counterfactual-temperature MoE router experiment |
 | `make_moe_ablation_tables.py` | MoE comparison, dataset-average, seed-stability, and temperature-selection tables |
 | `train_component_ablation.py` | full training and materialization of all neural branches used in the component ablation |
 | `retrain_seed_ablation.py` | complete multi-seed neural-module ablation |
 | `retrain_spacing_ablation.py` | regenerated candidate-spacing ablation with trained scorers |
+| `make_paper_artifacts.py` | paper-ready LaTeX tables and quantitative figures from reproduced results |
 
 Run all released experiments:
 
@@ -112,10 +113,14 @@ python exp/component_ablation.py
 python exp/operating_sensitivity.py
 python exp/random_insertion_guardrail.py
 python exp/evidence_stress.py
+python exp/make_paper_artifacts.py
 ```
 
-Raw rows, summaries, and figures are written under `results/`. The scripts
-never overwrite the frozen artifacts.
+Raw rows, summaries, generated LaTeX tables, and quantitative figures are
+written under `results/`. The scripts never overwrite the frozen artifacts.
+`make_paper_artifacts.py` expects the main and ablation result CSVs produced by
+`reproduce.py` and `exp/run_all.py`; it writes paper-ready assets to
+`results/paper_artifacts/`.
 
 The commands above reproduce the artifact-based paper experiments from the
 frozen release artifacts. To retrain all three neural branches or run the

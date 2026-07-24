@@ -76,50 +76,76 @@ def main() -> None:
                             perturb(source, candidates, family, severity, seed + 13 * index)
                             for index, source in enumerate(sources)
                         ]
+                        prior_rank, self_rank, geometry_rank, augmented_rank = perturbed
                         score, route = route_score(
                             *perturbed,
                             density=density,
                             budget=budget,
                             candidate_count=len(candidates),
                         )
-                        pred = select_from_candidate_score(temporal, candidates, score, budget)
-                        rows.append(
-                            {
-                                "dataset": dataset,
-                                "model": model,
-                                "family": family,
-                                "severity": severity,
-                                "repeat": repeat,
-                                "route": route,
-                                **evaluate(pred, gt),
-                            }
-                        )
+                        predictions = {
+                            "Prior + NMS": (
+                                select_from_candidate_score(temporal, candidates, prior_rank, budget),
+                                "prior",
+                            ),
+                            "Neural Event Rescue": (
+                                select_from_candidate_score(temporal, candidates, score, budget),
+                                route,
+                            ),
+                        }
+                        for method, (pred, method_route) in predictions.items():
+                            rows.append(
+                                {
+                                    "dataset": dataset,
+                                    "model": model,
+                                    "family": family,
+                                    "severity": severity,
+                                    "repeat": repeat,
+                                    "method": method,
+                                    "route": method_route,
+                                    **evaluate(pred, gt),
+                                }
+                            )
     raw = pd.DataFrame(rows)
     args.output_dir.mkdir(parents=True, exist_ok=True)
     raw.to_csv(args.output_dir / "evidence_stress_pair_metrics.csv", index=False)
-    summary = raw.groupby(["family", "severity"], as_index=False)[
+    summary = raw.groupby(["family", "severity", "method"])[
         ["pa_f1", "event_f1", "range_f1", "fpr"]
-    ].agg(["mean", "std"])
+    ].agg(["mean", "std"]).reset_index()
     summary.columns = [
         "_".join(item).strip("_") if isinstance(item, tuple) else item for item in summary.columns
     ]
     summary.to_csv(args.output_dir / "evidence_stress_summary.csv", index=False)
 
-    fig, axes = plt.subplots(1, 3, figsize=(7.2, 2.3), sharey=True)
+    fig, axes = plt.subplots(1, 3, figsize=(7.2, 2.35), sharey=True)
     for axis, family in zip(axes, ["noise", "drift", "dropout"]):
-        current = raw[raw["family"] == family].groupby("severity", as_index=False)["event_f1"].mean()
-        axis.plot(
-            current["severity"].to_numpy(dtype=float),
-            100 * current["event_f1"].to_numpy(dtype=float),
-            marker="o",
-            color="#0072B2",
-        )
+        current = raw[raw["family"] == family].groupby(
+            ["severity", "method"], as_index=False
+        )["event_f1"].mean()
+        for method, color, marker in [
+            ("Prior + NMS", "#777777", "s"),
+            ("Neural Event Rescue", "#0072B2", "o"),
+        ]:
+            line = current[current["method"] == method].sort_values("severity")
+            axis.plot(
+                line["severity"].to_numpy(dtype=float),
+                100 * line["event_f1"].to_numpy(dtype=float),
+                marker=marker,
+                linewidth=1.35,
+                markersize=3.5,
+                color=color,
+                label=method,
+            )
         axis.set_title(family.capitalize())
         axis.set_xlabel("Perturbation")
         axis.grid(axis="y", color="#dddddd", linewidth=0.5)
+        axis.spines["top"].set_visible(False)
+        axis.spines["right"].set_visible(False)
     axes[0].set_ylabel("Event F1 (%)")
+    axes[0].legend(frameon=False, fontsize=7)
     fig.tight_layout()
     fig.savefig(args.output_dir / "evidence_stress.pdf", bbox_inches="tight")
+    fig.savefig(args.output_dir / "evidence_stress.png", dpi=250, bbox_inches="tight")
     print(summary.to_string(index=False))
 
 
